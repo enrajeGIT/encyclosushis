@@ -772,7 +772,7 @@ const NETA = [
   // ---------- ANGUILLES ----------
   {
     id: "unagi", kanji: "鰻", romaji: "Unagi",
-    fr: "Anguille japonaise (eau douce)", en: "Freshwater eel",
+    fr: "Anguille (eau douce)", en: "Freshwater eel",
     cat: "anguille",
     gout: "Toujours servie cuite : grillée et laquée à la sauce tare sucrée-salée (kabayaki). Chair grasse, moelleuse, presque fondante, au parfum fumé caramélisé. Riche et réconfortante, c'est traditionnellement le plat des grandes chaleurs d'été.",
     regions: ["Lac Hamana (Shizuoka) — berceau de l'élevage", "Kagoshima et Aichi — premières régions productrices", "Stocks sauvages devenus rares (espèce menacée)"]
