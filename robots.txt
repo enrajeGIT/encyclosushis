@@ -1,4 +1,5 @@
+# Encyclosushi — robots
 User-agent: *
 Allow: /
 
-Sitemap: https://encyclosushis.com/sitemap.xml
+Sitemap: https://www.encyclosushis.com/sitemap.xml

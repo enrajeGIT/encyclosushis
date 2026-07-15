@@ -37,8 +37,8 @@ import sys
 from urllib.parse import quote
 
 DATA_FILE = "data.js"
-DEFAULT_OUT = "site"
-DEFAULT_DOMAIN = "encyclosushis.com"
+DEFAULT_OUT = "."                       # écrit à côté de index.html (racine du dépôt)
+DEFAULT_DOMAIN = "www.encyclosushis.com"
 
 
 # --------------------------------------------------------------------------
@@ -124,19 +124,16 @@ def meta_description(gout, limit=155):
 
 
 # --------------------------------------------------------------------------
-# Boutons de partage réseaux sociaux
+# Boutons de partage réseaux sociaux (X et Facebook — simples liens, aucun JS)
 # --------------------------------------------------------------------------
 SHARE_ICONS = {
     "x": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>',
     "facebook": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
-    "instagram": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>',
 }
 
 
 def share_block(url, text):
-    """Rangée X / Facebook / Instagram pour l'URL de la page.
-    X et Facebook sont de simples liens ; Instagram passe par un petit script
-    (feuille de partage native sur mobile, copie du lien sur ordinateur)."""
+    """Rangée X / Facebook pour l'URL de la page — de simples liens, sans JavaScript."""
     u = quote(url, safe="")
     t = quote(text, safe="")
     x_href = f"https://twitter.com/intent/tweet?text={t}&url={u}"
@@ -145,26 +142,7 @@ def share_block(url, text):
       <span class="share-label">Partager</span>
       <a class="share-btn share-x" href="{x_href}" target="_blank" rel="noopener" aria-label="Partager sur X" title="Partager sur X">{SHARE_ICONS['x']}</a>
       <a class="share-btn share-facebook" href="{fb_href}" target="_blank" rel="noopener" aria-label="Partager sur Facebook" title="Partager sur Facebook">{SHARE_ICONS['facebook']}</a>
-      <button type="button" class="share-btn share-instagram" onclick="igShare()" aria-label="Partager sur Instagram" title="Partager sur Instagram">{SHARE_ICONS['instagram']}</button>
     </div>"""
-
-
-def share_script(url, text):
-    """Toast + logique du bouton Instagram (Instagram n'a pas de partage web par URL)."""
-    return f"""<div id="toast" role="status" aria-live="polite"></div>
-<script>
-(function(){{
-  var url = {json.dumps(url)}, title = {json.dumps(text)};
-  window.igShare = function(){{
-    if(navigator.share){{ navigator.share({{url:url, title:title}}).catch(function(){{}}); return; }}
-    if(navigator.clipboard){{ navigator.clipboard.writeText(url).then(copied).catch(manual); }}
-    else manual();
-  }};
-  function copied(){{ show("Lien copié — collez-le dans votre story ou bio Instagram"); }}
-  function manual(){{ show("Copiez ce lien pour Instagram : " + url); }}
-  function show(m){{ var t=document.getElementById("toast"); t.textContent=m; t.classList.add("show"); setTimeout(function(){{t.classList.remove("show");}},2800); }}
-}})();
-</script>"""
 
 
 # --------------------------------------------------------------------------
@@ -183,7 +161,6 @@ def render_page(n, categories, domain):
 
     share_text = f"{n['fr']} ({n['romaji']}) — Encyclosushi"
     share_html = share_block(url, share_text)
-    share_js = share_script(url, share_text)
 
     jsonld = {
         "@context": "https://schema.org",
@@ -248,6 +225,8 @@ def render_page(n, categories, domain):
   </header>
 
   <div class="fiche-body">
+{share_html}
+
     <div class="photos">
       <figure class="photo">
         <div class="frame" data-kanji="{e(n['kanji'])}">
@@ -283,13 +262,10 @@ def render_page(n, categories, domain):
       </ul>
     </section>
 
-{share_html}
-
     <p class="back"><a href="/">‹ Retour à l'encyclopédie</a></p>
   </div>
 </article>
 
-{share_js}
 </body>
 </html>
 """
@@ -355,7 +331,8 @@ a{color:var(--kon)}
   border-radius:50%;background:var(--shu)}
 .back{margin-top:28px}
 .back a{text-decoration:none;font-weight:700} .back a:hover{text-decoration:underline}
-.share{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px}
+.share{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 24px;
+  padding-bottom:20px;border-bottom:1px solid var(--line)}
 .share-label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--sumi-soft);font-weight:700}
 .share-btn{width:38px;height:38px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
   border:1px solid var(--line);background:#fff;color:var(--kon);cursor:pointer;padding:0;text-decoration:none;
@@ -364,13 +341,7 @@ a{color:var(--kon)}
 .share-btn:hover{transform:translateY(-2px)}
 .share-x:hover{background:#000;color:#fff;border-color:#000}
 .share-facebook:hover{background:#1877F2;color:#fff;border-color:#1877F2}
-.share-instagram:hover{background:linear-gradient(45deg,#F58529,#DD2A7B,#8134AF);color:#fff;border-color:transparent}
 .share-btn:focus-visible{outline:3px solid var(--kon);outline-offset:2px}
-#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
-  background:var(--sumi);color:#F5F2E8;padding:12px 20px;border-radius:8px;font-size:.9rem;
-  box-shadow:0 8px 24px rgba(0,0,0,.25);opacity:0;pointer-events:none;z-index:100;max-width:90vw;
-  text-align:center;transition:opacity .25s ease, transform .25s ease}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media (max-width:640px){
   .photos{grid-template-columns:1fr} .names{grid-template-columns:1fr}
   .names>div+div{border-left:none;border-top:1px solid var(--line)}
@@ -384,16 +355,23 @@ a{color:var(--kon)}
 # 5) sitemap + robots
 # --------------------------------------------------------------------------
 def render_sitemap(neta, domain):
-    urls = [f"https://{domain}/"]
-    urls += [f"https://{domain}/neta/{n['id']}/" for n in neta]
-    items = "\n".join(f"  <url><loc>{u}</loc></url>" for u in urls)
+    from datetime import date
+    today = date.today().isoformat()
+    rows = [(f"https://{domain}/", "1.0")]
+    rows += [(f"https://{domain}/neta/{n['id']}/", "0.8") for n in neta]
+    items = "\n".join(
+        f"  <url><loc>{u}</loc><lastmod>{today}</lastmod><priority>{p}</priority></url>"
+        for u, p in rows
+    )
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
             f"{items}\n</urlset>\n")
 
 
 def render_robots(domain):
-    return ("User-agent: *\nAllow: /\n\n"
+    return ("# Encyclosushi — robots\n"
+            "User-agent: *\n"
+            "Allow: /\n\n"
             f"Sitemap: https://{domain}/sitemap.xml\n")
 
 
@@ -402,7 +380,8 @@ def render_robots(domain):
 # --------------------------------------------------------------------------
 def main():
     ap = argparse.ArgumentParser(description="Génère une page HTML par neta pour le SEO.")
-    ap.add_argument("--out", default=DEFAULT_OUT, help="dossier de sortie (défaut: site)")
+    ap.add_argument("--out", default=DEFAULT_OUT,
+                    help="dossier de sortie (défaut: '.', c.-à-d. la racine du dépôt, à côté de index.html)")
     ap.add_argument("--domain", default=DEFAULT_DOMAIN, help="domaine sans https://")
     ap.add_argument("--data", default=DATA_FILE, help="chemin de data.js")
     args = ap.parse_args()

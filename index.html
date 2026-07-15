@@ -5,6 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>寿司ネタ図鑑 — Encyclopédie des poissons à sushi</title>
 <meta name="description" content="Encyclopédie des neta : les poissons et fruits de mer du sushi, avec leurs noms japonais, français et anglais, leur goût et leurs régions de pêche.">
+<link rel="canonical" href="https://www.encyclosushis.com/">
+<meta name="theme-color" content="#1C3352">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Encyclosushi — Encyclopédie des poissons à sushi">
+<meta property="og:description" content="Les poissons et fruits de mer du sushi : noms japonais, français et anglais, goût, texture et régions de pêche.">
+<meta property="og:url" content="https://www.encyclosushis.com/">
+<meta property="og:image" content="https://www.encyclosushis.com/logo.png">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Encyclosushi">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Encyclosushi — Encyclopédie des poissons à sushi">
+<meta name="twitter:description" content="Les poissons et fruits de mer du sushi : noms japonais, français et anglais, goût, texture et régions de pêche.">
+<meta name="twitter:image" content="https://www.encyclosushis.com/logo.png">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Encyclosushi","alternateName":"寿司ネタ図鑑","url":"https://www.encyclosushis.com/","inLanguage":"fr","description":"Encyclopédie des neta : les poissons et fruits de mer du sushi, avec leurs noms japonais, français et anglais, leur goût et leurs régions de pêche.","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://www.encyclosushis.com/?q={search_term_string}"},"query-input":"required name=search_term_string"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
@@ -63,20 +81,19 @@
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    margin-top:22px;
-    width:72px;height:72px;
-    border:2px solid var(--shu);
-    background:var(--shu);
-    border-radius:10px;
-    padding:7px;
-    box-shadow:0 3px 12px rgba(0,0,0,.25);
+    margin-top:24px;
+    width:108px;height:108px;
+    background:#fff;
+    border-radius:16px;
+    padding:0;
+    box-shadow:0 6px 20px rgba(0,0,0,.28);
     overflow:hidden;
+    position:relative;z-index:1;
   }
   .site-header .hanko img{
     width:100%;height:100%;
     object-fit:contain;
     display:block;
-    border-radius:4px;
   }
 
   /* ---------- Barre outils ---------- */
@@ -304,13 +321,13 @@
   .share-facebook:hover{background:#1877F2;color:#fff;border-color:#1877F2}
   .share-btn:focus-visible{outline:3px solid var(--kon);outline-offset:2px}
   .modal-body .share{justify-content:flex-start;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+  main > .share{max-width:1200px;margin:0 auto 22px;padding:0 clamp(16px,4vw,28px)}
 
   footer{
     border-top:1px solid var(--line);
     padding:26px 20px 40px;text-align:center;
     color:var(--sumi-soft);font-size:.85rem;
   }
-  footer .share{margin-bottom:18px}
   footer .k{font-family:var(--font-display);color:var(--kon)}
 
   @media (max-width:640px){
@@ -349,11 +366,11 @@
 </div>
 
 <main>
+  <div class="share" id="share-home"></div>
   <div class="grid" id="grid"></div>
 </main>
 
 <footer>
-  <div class="share" id="share-home"></div>
   <span class="k">寿司ネタ図鑑</span> — encyclopédie personnelle des neta · photos de poissons : Wikimedia Commons · photos de nigiri : collection personnelle
 </footer>
 
@@ -594,6 +611,11 @@
     query = norm(searchEl.value.trim());
     render();
   });
+
+  // recherche partageable : /?q=maguro pré-remplit le champ et filtre
+  // (c'est ce que déclare le SearchAction dans les données structurées)
+  const initialQ = new URLSearchParams(location.search).get("q");
+  if(initialQ){ searchEl.value = initialQ; query = norm(initialQ.trim()); }
 
   buildChips();
   render();
