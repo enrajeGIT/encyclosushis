@@ -147,6 +147,7 @@
     display:flex;flex-direction:column;
     transition:transform .18s ease, box-shadow .18s ease;
     padding:0;
+    text-decoration:none;color:var(--sumi);cursor:pointer;
   }
   .card:hover{transform:translateY(-4px);box-shadow:0 10px 26px rgba(28,51,82,.14)}
   .card:focus-visible{outline:3px solid var(--kon);outline-offset:2px}
@@ -287,11 +288,35 @@
     background:var(--shu);
   }
 
+  /* ----- partage réseaux sociaux ----- */
+  .share{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
+  .share-label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--sumi-soft);font-weight:700}
+  .share-btn{width:38px;height:38px;border-radius:50%;display:inline-flex;
+    align-items:center;justify-content:center;border:1px solid var(--line);background:#fff;
+    color:var(--kon);cursor:pointer;padding:0;text-decoration:none;
+    transition:transform .15s ease, background .15s ease, color .15s ease, border-color .15s ease}
+  .share-btn svg{width:17px;height:17px;fill:currentColor}
+  .share-btn:hover{transform:translateY(-2px)}
+  .share-x:hover{background:#000;color:#fff;border-color:#000}
+  .share-facebook:hover{background:#1877F2;color:#fff;border-color:#1877F2}
+  .share-instagram:hover{background:linear-gradient(45deg,#F58529,#DD2A7B,#8134AF);
+    color:#fff;border-color:transparent}
+  .share-btn:focus-visible{outline:3px solid var(--kon);outline-offset:2px}
+  .modal-body .share{margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}
+
+  #toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
+    background:var(--sumi);color:#F5F2E8;padding:12px 20px;border-radius:8px;font-size:.9rem;
+    box-shadow:0 8px 24px rgba(0,0,0,.25);opacity:0;pointer-events:none;z-index:100;
+    max-width:90vw;text-align:center;transition:opacity .25s ease, transform .25s ease}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
   footer{
     border-top:1px solid var(--line);
     padding:26px 20px 40px;text-align:center;
     color:var(--sumi-soft);font-size:.85rem;
   }
+  footer .share{margin-bottom:18px}
   footer .k{font-family:var(--font-display);color:var(--kon)}
 
   @media (max-width:640px){
@@ -334,6 +359,7 @@
 </main>
 
 <footer>
+  <div class="share" id="share-home"></div>
   <span class="k">寿司ネタ図鑑</span> — encyclopédie personnelle des neta · photos de poissons : Wikimedia Commons · photos de nigiri : collection personnelle
 </footer>
 
@@ -341,6 +367,8 @@
 <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div class="modal" id="modal"></div>
 </div>
+
+<div id="toast" role="status" aria-live="polite"></div>
 
 <script src="data.js"></script>
 <script>
@@ -355,6 +383,74 @@
   let activeCat = "all";
   let query = "";
   let lastFocus = null;
+
+  /* ----- partage réseaux sociaux ----- */
+  // location.origin s'adapte à l'hébergement : github.io en test, encyclosushis.com en prod.
+  const SITE = location.origin;
+  const SHARE_ICONS = {
+    x: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>',
+    facebook: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
+    instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>'
+  };
+
+  function showToast(msg){
+    const t = document.getElementById("toast");
+    if(!t) return;
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => t.classList.remove("show"), 2800);
+  }
+
+  function shareInstagram(url){
+    // Instagram n'a pas de partage web par URL.
+    // Sur mobile : la feuille de partage native propose Instagram. Sur desktop : on copie le lien.
+    if(navigator.share){ navigator.share({ url }).catch(()=>{}); return; }
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(url)
+        .then(()=> showToast("Lien copié — collez-le dans votre story ou bio Instagram"))
+        .catch(()=> showToast("Copiez ce lien pour Instagram : " + url));
+    } else {
+      showToast("Copiez ce lien pour Instagram : " + url);
+    }
+  }
+
+  // Construit la rangée de 3 boutons (X, Facebook, Instagram) pour une URL donnée.
+  function shareBar(url, text, label){
+    const wrap = document.createElement("div");
+    wrap.className = "share";
+    if(label){
+      const l = document.createElement("span");
+      l.className = "share-label";
+      l.textContent = label;
+      wrap.appendChild(l);
+    }
+    const u = encodeURIComponent(url), t = encodeURIComponent(text);
+
+    const x = document.createElement("a");
+    x.className = "share-btn share-x";
+    x.href = "https://twitter.com/intent/tweet?text=" + t + "&url=" + u;
+    x.target = "_blank"; x.rel = "noopener";
+    x.setAttribute("aria-label", "Partager sur X"); x.title = "Partager sur X";
+    x.innerHTML = SHARE_ICONS.x;
+
+    const fb = document.createElement("a");
+    fb.className = "share-btn share-facebook";
+    fb.href = "https://www.facebook.com/sharer/sharer.php?u=" + u;
+    fb.target = "_blank"; fb.rel = "noopener";
+    fb.setAttribute("aria-label", "Partager sur Facebook"); fb.title = "Partager sur Facebook";
+    fb.innerHTML = SHARE_ICONS.facebook;
+
+    const ig = document.createElement("button");
+    ig.type = "button";
+    ig.className = "share-btn share-instagram";
+    ig.setAttribute("aria-label", "Partager sur Instagram"); ig.title = "Partager sur Instagram";
+    ig.innerHTML = SHARE_ICONS.instagram;
+    ig.addEventListener("click", () => shareInstagram(url));
+
+    wrap.append(x, fb, ig);
+    return wrap;
+  }
 
   /* ----- utilitaires ----- */
   const norm = s => (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -423,8 +519,9 @@
     }
 
     list.forEach(n=>{
-      const card = document.createElement("button");
+      const card = document.createElement("a");
       card.className = "card";
+      card.href = "/neta/" + n.id + "/";
       card.setAttribute("aria-label", "Voir la fiche : " + n.fr);
 
       const imgZone = document.createElement("div");
@@ -439,7 +536,14 @@
         '<div class="card-cat">'+CATEGORIES[n.cat]+'</div>';
 
       card.append(imgZone, body);
-      card.addEventListener("click", ()=>openModal(n));
+      card.addEventListener("click", (ev)=>{
+        // Clic gauche simple : on garde la modale (rapide, sans recharger la page).
+        // Ctrl/Cmd/Maj/clic-milieu : on laisse le navigateur ouvrir la vraie page
+        // (nouvel onglet, etc.). Les moteurs de recherche, eux, suivent le href.
+        if(ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey || ev.button===1) return;
+        ev.preventDefault();
+        openModal(n);
+      });
       grid.appendChild(card);
     });
   }
@@ -502,6 +606,11 @@
       n.regions.map(r=>"<li>"+r+"</li>").join("") + "</ul>";
 
     body.append(photos, names, gout, reg);
+
+    // partage de CETTE fiche (vers sa page statique /neta/<id>/)
+    const ficheUrl = SITE + "/neta/" + n.id + "/";
+    body.appendChild(shareBar(ficheUrl, n.fr + " (" + n.romaji + ") — Encyclosushi", "Partager cette fiche"));
+
     modal.append(head, body);
 
     overlay.classList.add("open");
@@ -527,6 +636,11 @@
 
   buildChips();
   render();
+
+  // partage de la page d'accueil
+  document.getElementById("share-home").appendChild(
+    shareBar(SITE + "/", "Encyclosushi — l'encyclopédie des poissons à sushi", "Partager")
+  );
 })();
 </script>
 </body>
