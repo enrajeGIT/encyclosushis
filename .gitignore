@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Projet carnet séparé (dépôt distinct)
+sushicho-v3/
+
+# Note de session interne (handoff Claude Code)
+RESUME-SESSION-SUSHI.md
+
+# Réglages locaux Claude Code
+.claude/
