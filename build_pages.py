@@ -39,6 +39,7 @@ from urllib.parse import quote
 DATA_FILE = "data.js"
 DEFAULT_OUT = "."                       # écrit à côté de index.html (racine du dépôt)
 DEFAULT_DOMAIN = "www.encyclosushis.com"
+GA_ID = "G-4Q6MX1M0NQ"                              # ex: "G-XXXXXXXXXX" — laisse vide pour désactiver l'analytics
 
 
 # --------------------------------------------------------------------------
@@ -187,6 +188,7 @@ def render_page(n, categories, domain):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script defer src="/assets/analytics.js"></script>
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
 <link rel="canonical" href="{e(url)}">
@@ -375,6 +377,28 @@ def render_robots(domain):
             f"Sitemap: https://{domain}/sitemap.xml\n")
 
 
+def render_analytics_js(ga_id):
+    """Google Analytics 4 (gtag.js), chargé par toutes les pages depuis un seul fichier.
+    Si ga_id est vide (ou contient encore 'XXXX'), le script ne charge rien."""
+    ga_id = ga_id or ""
+    return (
+        "// Google Analytics 4 (gtag.js) — chargé sur toutes les pages du site.\n"
+        "// L'identifiant est défini dans build_pages.py (constante GA_ID ou option --ga).\n"
+        "(function(){\n"
+        f"  var GA_ID = {json.dumps(ga_id)};\n"
+        '  if(!GA_ID || GA_ID.indexOf("XXXX") !== -1){ return; }  // non configuré : on ne charge rien\n'
+        "  var s = document.createElement('script');\n"
+        "  s.async = true;\n"
+        "  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;\n"
+        "  document.head.appendChild(s);\n"
+        "  window.dataLayer = window.dataLayer || [];\n"
+        "  window.gtag = function(){ dataLayer.push(arguments); };\n"
+        "  gtag('js', new Date());\n"
+        "  gtag('config', GA_ID);\n"
+        "})();\n"
+    )
+
+
 # --------------------------------------------------------------------------
 # Programme principal
 # --------------------------------------------------------------------------
@@ -384,6 +408,8 @@ def main():
                     help="dossier de sortie (défaut: '.', c.-à-d. la racine du dépôt, à côté de index.html)")
     ap.add_argument("--domain", default=DEFAULT_DOMAIN, help="domaine sans https://")
     ap.add_argument("--data", default=DATA_FILE, help="chemin de data.js")
+    ap.add_argument("--ga", default=GA_ID,
+                    help="ID de mesure GA4 (ex: G-XXXXXXXXXX) ; vide = analytics désactivé")
     args = ap.parse_args()
 
     categories, neta = load_data(args.data)
@@ -394,6 +420,10 @@ def main():
     # CSS partagé
     with open(os.path.join(args.out, "assets", "neta.css"), "w", encoding="utf-8") as f:
         f.write(CSS)
+
+    # Google Analytics partagé (un seul endroit pour l'ID)
+    with open(os.path.join(args.out, "assets", "analytics.js"), "w", encoding="utf-8") as f:
+        f.write(render_analytics_js(args.ga))
 
     # une page par neta
     for n in neta:
@@ -410,6 +440,8 @@ def main():
 
     print(f"✓ {len(neta)} pages générées dans {args.out}/neta/<id>/index.html")
     print(f"✓ sitemap.xml ({len(neta)+1} URL) et robots.txt écrits")
+    ga_ok = bool(args.ga) and "XXXX" not in args.ga
+    print(f"✓ analytics.js écrit — GA4 {'activé (' + args.ga + ')' if ga_ok else 'désactivé (aucun ID)'}")
     print(f"→ domaine utilisé : https://{args.domain}")
 
 
