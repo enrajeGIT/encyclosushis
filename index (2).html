@@ -304,13 +304,14 @@
   .share-facebook:hover{background:#1877F2;color:#fff;border-color:#1877F2}
   .share-btn:focus-visible{outline:3px solid var(--kon);outline-offset:2px}
   .modal-body .share{justify-content:flex-start;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+  .site-header .share{margin-top:26px;position:relative;z-index:1}
+  .site-header .share-label{color:#C9D4E2}
 
   footer{
     border-top:1px solid var(--line);
     padding:26px 20px 40px;text-align:center;
     color:var(--sumi-soft);font-size:.85rem;
   }
-  footer .share{margin-bottom:18px}
   footer .k{font-family:var(--font-display);color:var(--kon)}
 
   @media (max-width:640px){
@@ -333,6 +334,7 @@
   <h1 class="kanji-title">寿司ネタ図鑑</h1>
   <p class="subtitle">Encyclopédie des poissons à sushi</p>
   <span class="hanko"><img src="logo.png" alt="Encyclosushi"></span>
+  <div class="share" id="share-home"></div>
 </header>
 
 <div class="toolbar">
@@ -353,7 +355,6 @@
 </main>
 
 <footer>
-  <div class="share" id="share-home"></div>
   <span class="k">寿司ネタ図鑑</span> — encyclopédie personnelle des neta · photos de poissons : Wikimedia Commons · photos de nigiri : collection personnelle
 </footer>
 
