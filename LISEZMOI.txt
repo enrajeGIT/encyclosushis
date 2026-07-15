@@ -1,0 +1,79 @@
+寿司ネタ図鑑 — Encyclopédie des poissons à sushi
+=================================================
+
+DÉMARRAGE
+---------
+Ouvrez simplement index.html dans un navigateur. Aucun serveur nécessaire.
+Pour mettre en ligne : déposez tout le dossier tel quel sur GitHub Pages,
+Netlify, ou n'importe quel hébergement statique.
+
+AJOUTER VOS IMAGES
+------------------
+Deux dossiers :
+  images/poissons/   → photo du poisson entier (Wikipédia, libre de droits)
+  images/nigiris/    → photo du nigiri (votre collection)
+
+Le nom de fichier doit correspondre au champ "id" de data.js, au format .jpg :
+  images/poissons/maguro.jpg
+  images/nigiris/maguro.jpg
+
+Tant qu'une image manque, le site affiche automatiquement le kanji de
+l'espèce sur fond indigo — vous pouvez donc remplir au fur et à mesure.
+Format conseillé : ratio 4:3, environ 800×600 px.
+
+AJOUTER / MODIFIER UNE ESPÈCE
+-----------------------------
+Tout le contenu est dans data.js : copiez un bloc { ... }, changez les
+champs, et placez les images correspondantes. C'est tout.
+
+LISTE DES 49 FICHIERS IMAGES ATTENDUS
+-------------------------------------
+  maguro.jpg      → 鮪 · Maguro (akami) · Thon rouge (chair maigre)
+  chutoro.jpg     → 中トロ · Chūtoro · Thon mi-gras
+  otoro.jpg       → 大トロ · Ōtoro · Thon très gras (ventre)
+  katsuo.jpg      → 鰹 · Katsuo · Bonite à ventre rayé
+  sake.jpg        → 鮭 · Sāmon / Sake · Saumon
+  hamachi.jpg     → 魬 · Hamachi · Sériole jeune (élevage)
+  buri.jpg        → 鰤 · Buri · Sériole du Japon (adulte)
+  kanpachi.jpg    → 間八 · Kanpachi · Sériole couronnée
+  shimaaji.jpg    → 縞鯵 · Shima-aji · Carangue dentue
+  saba.jpg        → 鯖 · Saba · Maquereau
+  shimesaba.jpg   → 締め鯖 · Shime-saba · Maquereau mariné au vinaigre
+  aji.jpg         → 鯵 · Aji · Chinchard
+  iwashi.jpg      → 鰯 · Iwashi · Sardine
+  sanma.jpg       → 秋刀魚 · Sanma · Balaou du Pacifique
+  kohada.jpg      → 小鰭 · Kohada · Alose tachetée (jeune)
+  sayori.jpg      → 細魚 · Sayori · Demi-bec du Japon
+  tai.jpg         → 鯛 · Tai / Madai · Dorade japonaise
+  hirame.jpg      → 平目 · Hirame · Cardeau hirame (flet japonais)
+  engawa.jpg      → 縁側 · Engawa · Muscle de nageoire de flet
+  karei.jpg       → 鰈 · Karei · Limande / plie du Japon
+  suzuki.jpg      → 鱸 · Suzuki · Bar japonais
+  kinmedai.jpg    → 金目鯛 · Kinmedai · Béryx long (dorade œil d'or)
+  nodoguro.jpg    → 喉黒 · Nodoguro / Akamutsu · Bar à gorge noire
+  isaki.jpg       → 伊佐木 · Isaki · Grondeur japonais
+  fugu.jpg        → 河豚 · Fugu · Poisson-globe
+  unagi.jpg       → 鰻 · Unagi · Anguille japonaise (eau douce)
+  anago.jpg       → 穴子 · Anago · Congre japonais
+  ebi.jpg         → 海老 · Ebi · Crevette cuite
+  amaebi.jpg      → 甘海老 · Amaebi · Crevette nordique (crue)
+  botanebi.jpg    → 牡丹海老 · Botan ebi · Crevette botan
+  kurumaebi.jpg   → 車海老 · Kuruma ebi · Crevette kuruma (tigrée du Japon)
+  shako.jpg       → 蝦蛄 · Shako · Squille (crevette-mante)
+  zuwaigani.jpg   → 楚蟹 · Zuwai-gani · Crabe des neiges
+  tarabagani.jpg  → 鱈場蟹 · Taraba-gani · Crabe royal du Kamtchatka
+  hotate.jpg      → 帆立 · Hotate · Coquille Saint-Jacques
+  akagai.jpg      → 赤貝 · Akagai · Arche de Broughton (coque sanguine)
+  hokkigai.jpg    → 北寄貝 · Hokkigai · Mactre de Sakhaline
+  tsubugai.jpg    → 螺 · Tsubu-gai · Bulot du Japon
+  mirugai.jpg     → 海松貝 · Mirugai · Panope du Japon
+  awabi.jpg       → 鮑 · Awabi · Ormeau
+  kaki.jpg        → 牡蠣 · Kaki · Huître
+  ika.jpg         → 烏賊 · Ika · Calmar / seiche
+  tako.jpg        → 蛸 · Tako · Poulpe
+  hotaruika.jpg   → 蛍烏賊 · Hotaru-ika · Calmar luciole
+  ikura.jpg       → いくら · Ikura · Œufs de saumon
+  tobiko.jpg      → 飛子 · Tobiko · Œufs de poisson volant
+  kazunoko.jpg    → 数の子 · Kazunoko · Œufs de hareng
+  uni.jpg         → 雲丹 · Uni · Oursin (gonades)
+  tamago.jpg      → 玉子 · Tamago · Omelette japonaise
