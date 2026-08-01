@@ -810,6 +810,13 @@ const NETA = [
     regions: ["Élevages d'Asie du Sud-Est (vannamei, black tiger)", "Argentine — crevette rouge sauvage", "Japon : petites pêcheries côtières"]
   },
   {
+    id: "inarizushi", kanji: "稲荷寿司", romaji: "Inari-zushi",
+    fr: "Sushi en poche de tofu frit", en: "Sushi rice in fried tofu pouch",
+    cat: "autre",
+    gout: "Une poche d'abura-age mijotée dans un bouillon sucré-salé puis remplie de riz vinaigré. Moelleux, juteux et doucement sucré, l'inari-zushi est l'un des sushis les plus simples et les plus populaires, aussi familier dans les bentō et les konbini qu'aux comptoirs.",
+    regions: ["Préparé dans tout le Japon", "Forme rectangulaire fréquente dans l'est, triangulaire dans le Kansai", "Très courant dans les bentō, supermarchés et konbini"]
+  },
+  {
     id: "amaebi", kanji: "甘海老", romaji: "Amaebi",
     fr: "Crevette nordique (crue)", en: "Sweet shrimp",
     cat: "crustace",
@@ -1308,7 +1315,13 @@ const NETA = [
     gout: "L'omelette sucrée-salée montée couche par couche, parfois enrichie de crevette ou de poisson mixés dans la tradition edomae. Moelleuse, dense et parfumée au dashi, elle se déguste souvent en fin de repas — on dit qu'elle révèle, à elle seule, le savoir-faire d'une maison.",
     regions: ["Préparée dans chaque sushi-ya (pas de pêche !)", "Tradition edomae : tamago au shiba-ebi de la baie de Tokyo"]
   },
-
+  {
+    id: "inarizushi", kanji: "稲荷寿司", romaji: "Inari-zushi",
+    fr: "Sushi en poche de tofu frit", en: "Sushi rice in fried tofu pouch",
+    cat: "autre",
+    gout: "Une poche d'abura-age mijotée dans un bouillon sucré-salé puis remplie de riz vinaigré. Moelleux, juteux et doucement sucré, l'inari-zushi est l'un des sushis les plus simples et les plus populaires, aussi familier dans les bentō et les konbini qu'aux comptoirs.",
+    regions: ["Préparé dans tout le Japon", "Forme rectangulaire fréquente dans l'est, triangulaire dans le Kansai", "Très courant dans les bentō, supermarchés et konbini"]
+  },
   {
     id: "ankimo", kanji: "鮟肝", romaji: "Ankimo",
     fr: "Foie de lotte", en: "Monkfish liver",
