@@ -810,11 +810,11 @@ const NETA = [
     regions: ["Élevages d'Asie du Sud-Est (vannamei, black tiger)", "Argentine — crevette rouge sauvage", "Japon : petites pêcheries côtières"]
   },
   {
-    id: "inarizushi", kanji: "稲荷寿司", romaji: "Inari-zushi",
-    fr: "Sushi en poche de tofu frit", en: "Sushi rice in fried tofu pouch",
-    cat: "autre",
-    gout: "Une poche d'abura-age mijotée dans un bouillon sucré-salé puis remplie de riz vinaigré. Moelleux, juteux et doucement sucré, l'inari-zushi est l'un des sushis les plus simples et les plus populaires, aussi familier dans les bentō et les konbini qu'aux comptoirs.",
-    regions: ["Préparé dans tout le Japon", "Forme rectangulaire fréquente dans l'est, triangulaire dans le Kansai", "Très courant dans les bentō, supermarchés et konbini"]
+    id: "kani", kanji: "蟹", romaji: "Kani",
+    fr: "Crabe", en: "Crab",
+    cat: "crustace",
+    gout: "Chair de crabe cuite, délicate, filandreuse et naturellement sucrée, disposée sur le riz ou servie en gunkan. L'appellation générique kani recouvre souvent du crabe des neiges ou du crabe rouge des neiges, sans désigner une espèce précise sur les menus courants.",
+    regions: ["Hokkaidō et mer du Japon", "Mer d'Okhotsk", "Importations d'Alaska et du Canada"]
   },
   {
     id: "amaebi", kanji: "甘海老", romaji: "Amaebi",
